@@ -6,7 +6,8 @@ class OptimisedImage extends Image
 	protected static $default_quality = 85;
 	protected static $enabled = true;
 	protected static $type_commands = array(
-		2 => 'jpegoptim -p -m$Quality --strip-all $Filename'
+		2 => 'jpegoptim -p -m$Quality --strip-all $Filename',
+		3 => 'optipng $Filename'
 	);
 	protected static $bin_directory = '';
 	protected static $exec_ending = ' > /dev/null 2>&1 &';
