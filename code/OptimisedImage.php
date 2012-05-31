@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 
+ * OptimisedImage
  */
 class OptimisedImage extends Image
 {
@@ -16,7 +16,8 @@ class OptimisedImage extends Image
         ),
         3 => array(
             'optipng' => 'optipng $Filename',
-            'pngcrush' => 'pngcrush -rem gAMA -rem cHRM -rem iCCP -rem sRGB -ow $Filename'
+            'pngcrush' => 'pngcrush -rem gAMA -rem cHRM -rem iCCP -rem sRGB -ow $Filename',
+            'advpng' => 'advpng -z4 $Filename'
         )
     );
 
@@ -30,36 +31,36 @@ class OptimisedImage extends Image
 
     protected static $logging_file = '../heyday-optimisedimage/logs/output.log';
 
-    protected static $background_processing = true;
+    protected static $bg_processing = true;
 
     protected $quality = false;
 
-    public static function set_default_quality($qual)
+    public static function setDefaultQuality($qual)
     {
 
         self::$default_quality = $qual;
         
     }
 
-    public static function set_enabled($enabled)
+    public static function setEnabled($enabled)
     {
 
         self::$enabled = $enabled;
 
     }
 
-    public static function set_enabled_commands($enabled_commands)
+    public static function setEnabledCommands($enabledCommands)
     {
 
-        foreach ($enabled_commands as $type => $bin_name) {
+        foreach ($enabledCommands as $type => $binName) {
 
             if (is_int($type)) {
 
-                self::$enabled_commands[$type] = $bin_name;
+                self::$enabled_commands[$type] = $binName;
 
             } else {
 
-                self::$enabled_commands[self::get_number_by_type($type)] = $bin_name;
+                self::$enabled_commands[self::getNumberByType($type)] = $binName;
 
             }
 
@@ -67,20 +68,20 @@ class OptimisedImage extends Image
 
     }
 
-    public static function get_number_by_type($imageType)
+    public static function getNumberByType($imageType)
     {
 
         switch (strtolower($imageType)) {
 
-        case 'gif':
-            return 1;
+            case 'gif':
+                return 1;
 
-        case 'jpg':
-        case 'jpeg':
-            return 2;
+            case 'jpg':
+            case 'jpeg':
+                return 2;
 
-        case 'png':
-            return 3;
+            case 'png':
+                return 3;
 
         }
 
@@ -88,45 +89,45 @@ class OptimisedImage extends Image
 
     }
 
-    public static function add_type_command($imageType, $bin_name, $cmd)
+    public static function addTypeCommand($imageType, $binName, $cmd)
     {
 
-        self::$type_commands[self::get_number_by_type($imageType)][$bin_name] = $cmd;
+        self::$type_commands[self::getNumberByType($imageType)][$binName] = $cmd;
 
     }
 
-    public static function set_bin_directory($directory)
+    public static function setBinDirectory($directory)
     {
 
         self::$bin_directory = $directory;
 
     }
 
-    public static function set_exec_ending($ending)
+    public static function setExecEnding($ending)
     {
 
         self::$exec_ending = $ending;
 
     }
 
-    public static function set_logging($logging)
+    public static function setLogging($logging)
     {
 
         self::$logging = $logging;
 
     }
 
-    public static function set_logging_file($file)
+    public static function setLoggingFile($file)
     {
 
         self::$logging_file = $file;
 
     }
 
-    public static function set_background_processing($enabled)
+    public static function setBackgroundProcessing($enabled)
     {
 
-        self::$background_processing = $enabled;
+        self::$bg_processing = $enabled;
 
     }
 
@@ -144,24 +145,24 @@ class OptimisedImage extends Image
 
     }
 
-    function generateFormattedImage($format, $arg1 = null, $arg2 = null) {
+    public function generateFormattedImage($format, $arg1 = null, $arg2 = null)
+    {
 
         $cacheFile = $this->cacheFilename($format, $arg1, $arg2);
 
-        $gd = new GD(Director::baseFolder()."/" . $this->Filename);
+        $gd = new GD(Director::baseFolder() . '/' . $this->Filename);
 
-
-        if($gd->hasGD()){
+        if ($gd->hasGD()) {
 
             $generateFunc = "generate$format";
 
-            if($this->hasMethod($generateFunc)){
+            if ($this->hasMethod($generateFunc)) {
 
                 $gd = $this->$generateFunc($gd, $arg1, $arg2);
 
                 $resampledFile = Director::baseFolder() . '/' . $cacheFile;
 
-                if($gd){
+                if ($gd) {
 
                     $gd->writeTo($resampledFile);
 
@@ -195,7 +196,7 @@ class OptimisedImage extends Image
                             exec(self::$bin_directory . $viewer->process(new ArrayData(array(
                                 'Quality' => $this->getQuality(),
                                 'Filename' => $resampledFile
-                            ))) . (self::$background_processing ? self::$exec_ending : ''));
+                            ))) . (self::$bg_processing ? self::$exec_ending : ''));
                             
                         }
 
