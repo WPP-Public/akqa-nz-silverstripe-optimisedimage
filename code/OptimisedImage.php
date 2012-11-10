@@ -39,7 +39,7 @@ class OptimisedImage extends Image
     {
 
         self::$default_quality = $qual;
-        
+
     }
 
     public static function setEnabled($enabled)
@@ -140,7 +140,6 @@ class OptimisedImage extends Image
 
     public function getQuality()
     {
-
         return $this->quality ? $this->quality : self::$default_quality;
 
     }
@@ -188,22 +187,22 @@ class OptimisedImage extends Image
                             if (count($output)) {
 
                                 file_put_contents(self::$logging_file, implode(PHP_EOL, $output) . PHP_EOL, FILE_APPEND);
-                                
+
                             }
-                            
+
                         } else {
 
                             exec(self::$bin_directory . $viewer->process(new ArrayData(array(
                                 'Quality' => $this->getQuality(),
                                 'Filename' => $resampledFile
                             ))) . (self::$bg_processing ? self::$exec_ending : ''));
-                            
+
                         }
 
                     }
 
                 }
-    
+
             } else {
 
                 user_error("Image::generateFormattedImage - Image $format function not found.", E_USER_WARNING);
@@ -213,5 +212,5 @@ class OptimisedImage extends Image
         }
 
     }
-    
+
 }

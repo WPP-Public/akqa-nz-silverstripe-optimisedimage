@@ -1,0 +1,16 @@
+{
+	"name": "heyday/silverstripe-optimisedimage",
+	"description": "Uses various binary tools like jpegoptim and optipng to optimise resampled images create by SilverStripe",
+	"license": "MIT",
+	"authors": [
+		{
+            "name": "Cam Spiers",
+            "email": "cameron@heyday.co.nz",
+            "role": "Developer"
+        }
+	],
+	"type": "silverstripe-module",
+	"require": {
+		"composer/installers": "1.0.0"
+	}
+}
