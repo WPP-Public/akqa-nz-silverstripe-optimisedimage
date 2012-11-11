@@ -4,7 +4,7 @@ Uses various binary tools like jpegoptim and optipng to optimise resampled image
 
 ##License
 
-Publish permissions is licensed under an [MIT license](http://heyday.mit-license.org/)
+Optimised image is licensed under an [MIT license](http://heyday.mit-license.org/)
 
 ##Installation
 
