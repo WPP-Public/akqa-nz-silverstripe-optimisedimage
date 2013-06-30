@@ -1,5 +1,4 @@
 <?php
-
 use Symfony\Component\Process\Process;
 
 /**
@@ -40,6 +39,7 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
     }
     /**
      * @param $filename
+     * @return mixed|void
      */
     public function optimiseImage($filename)
     {
@@ -60,12 +60,12 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
                     $this->logger->capture(
                         array(
                             'message' => 'SilverStripe Optimised Image',
-                            'extra' => array(
-                                'exitCode' => $process->getExitCode(),
-                                'output' => $process->getOutput(),
+                            'extra'   => array(
+                                'exitCode'    => $process->getExitCode(),
+                                'output'      => $process->getOutput(),
                                 'errorOutput' => $process->getErrorOutput()
                             ),
-                            'level' => !$process->isSuccessful() ? Raven_Client::ERROR : Raven_Client::INFO
+                            'level'   => !$process->isSuccessful() ? Raven_Client::ERROR : Raven_Client::INFO
                         ),
                         false
                     );
@@ -78,8 +78,7 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
         switch ($type) {
             case IMAGETYPE_JPEG:
                 return 'jpg';
-            case IMAGETYPE_PNG;
-
+            case IMAGETYPE_PNG:
                 return 'png';
             default:
                 return false;
@@ -100,7 +99,7 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
 
         $command = false;
 
-        foreach ((array) $this->config->get('enabledCommands') as $commandType) {
+        foreach ((array)$this->config->get('enabledCommands') as $commandType) {
             if (isset($commands[$type][$commandType])) {
                 $command = $commands[$type][$commandType];
                 break;
@@ -111,19 +110,11 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
             return false;
         }
 
-        $viewer = new SSViewer_FromString($command);
-
         return sprintf(
-            '%s/%s',
+            $command,
             rtrim($this->config->get('binDirectory'), '/'),
-            $viewer->process(
-                new ArrayData(
-                    array(
-                        'Quality'  => $this->config->get('optimisingQuality'),
-                        'Filename' => $filename
-                    )
-                )
-            )
+            $filename,
+            $this->config->get('optimisingQuality')
         );
     }
     /**

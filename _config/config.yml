@@ -1,11 +1,11 @@
 OptimisedGDBackend:
   availableCommands:
     jpg:
-      jpegoptim: 'jpegoptim -p -m$Quality --strip-all $Filename'
+      jpegoptim: '%1$s/jpegoptim -p -m%3$d --strip-all %2$s'
     png:
-      optipng: 'optipng $Filename'
-      pngcrush: 'pngcrush -rem gAMA -rem cHRM -rem iCCP -rem sRGB -ow $Filename'
-      advpng: 'advpng -z4 $Filename'
+      optipng: '%s/optipng %s'
+      pngcrush: '%s/pngcrush -rem gAMA -rem cHRM -rem iCCP -rem sRGB -ow %s'
+      advpng: '%s/advpng -z4 $Filename'
   enabledCommands:
   binDirectory: '/usr/local/bin'
   optimisingQuality: 80
