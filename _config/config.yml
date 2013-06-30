@@ -8,3 +8,4 @@ OptimisedGDBackend:
       advpng: 'advpng -z4 $Filename'
   enabledCommands:
   binDirectory: '/usr/local/bin'
+  optimisingQuality: 80

@@ -79,6 +79,7 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
             case IMAGETYPE_JPEG:
                 return 'jpg';
             case IMAGETYPE_PNG;
+
                 return 'png';
             default:
                 return false;
@@ -118,7 +119,7 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
             $viewer->process(
                 new ArrayData(
                     array(
-                        'Quality'  => $this->quality,
+                        'Quality'  => $this->config->get('optimisingQuality'),
                         'Filename' => $filename
                     )
                 )
@@ -133,6 +134,7 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
     {
         $process = new Process($command);
         $process->run();
+
         return $process;
     }
 }
