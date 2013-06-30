@@ -14,4 +14,3 @@ Optimised image is licensed under an [MIT license](http://heyday.mit-license.org
 
 ## Usage
 
-Extend `OptimisedImage` in your custom image class, or set `OptimisedImage` as your field type in your `has_one` array.

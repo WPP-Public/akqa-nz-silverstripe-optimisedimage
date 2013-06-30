@@ -1,0 +1,10 @@
+OptimisedGDBackend:
+  availableCommands:
+    jpg:
+      jpegoptim: 'jpegoptim -p -m$Quality --strip-all $Filename'
+    png:
+      optipng: 'optipng $Filename'
+      pngcrush: 'pngcrush -rem gAMA -rem cHRM -rem iCCP -rem sRGB -ow $Filename'
+      advpng: 'advpng -z4 $Filename'
+  enabledCommands:
+  binDirectory: '/usr/local/bin'
