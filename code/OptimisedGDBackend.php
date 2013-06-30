@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\Process\Process;
 
 /**
@@ -57,10 +58,13 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
                 $debug = $this->config->get('debug');
 
                 if (null !== $this->logger && (!$process->isSuccessful() || $debug)) {
+                    $requestMethod = $_SERVER['REQUEST_METHOD'];
+                    unset($_SERVER['REQUEST_METHOD']);
                     $this->logger->capture(
                         array(
                             'message' => 'SilverStripe Optimised Image',
                             'extra'   => array(
+                                'command'     => $command,
                                 'exitCode'    => $process->getExitCode(),
                                 'output'      => $process->getOutput(),
                                 'errorOutput' => $process->getErrorOutput()
@@ -69,6 +73,7 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
                         ),
                         false
                     );
+                    $_SERVER['REQUEST_METHOD'] = $requestMethod;
                 }
             }
         }
