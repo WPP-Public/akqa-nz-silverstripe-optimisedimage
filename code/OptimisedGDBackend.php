@@ -55,14 +55,12 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
             if ($command) {
                 $process = $this->execCommand($command);
 
-                $debug = $this->config->get('debug');
-
-                if (null !== $this->logger && (!$process->isSuccessful() || $debug)) {
+                if (null !== $this->logger && (!$process->isSuccessful() || $this->config->get('debug'))) {
                     $requestMethod = $_SERVER['REQUEST_METHOD'];
                     unset($_SERVER['REQUEST_METHOD']);
                     $this->logger->capture(
                         array(
-                            'message' => 'SilverStripe Optimised Image',
+                            'message' => 'SilverStripe Optimised Image' . ($process->isSuccessful() ? '' : ' Failure'),
                             'extra'   => array(
                                 'command'     => $command,
                                 'exitCode'    => $process->getExitCode(),
