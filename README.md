@@ -1,29 +1,15 @@
-#Heyday silverstripe-optimisedimage
+# SilverStripe Optimised Image
 
 Uses various binary tools like jpegoptim and optipng to optimise resampled images create by SilverStripe
 
-##License
+## License
 
 Optimised image is licensed under an [MIT license](http://heyday.mit-license.org/)
 
-##Installation
+## Installation (with composer)
 
-###Non-composer
+	$ composer require heyday/silverstripe-dataobjectpreview
 
-To install just drop the silverstripe-optimisedimage directory into your SilverStripe root and run a /dev/build/?flush=1
-
-###Composer
-
-Add the following to your composer.json file:
-
-```json
-{
-	"require": {
-		"heyday/silverstripe-optimisedimage": "*"
-	}
-}
-```
-
-###Usage
+## Usage
 
 Extend `OptimisedImage` in your custom image class, or set `OptimisedImage` as your field type in your `has_one` array.
