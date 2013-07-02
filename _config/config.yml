@@ -1,3 +1,6 @@
+---
+Name: 'core'
+---
 OptimisedGDBackend:
   availableCommands:
     jpg:
