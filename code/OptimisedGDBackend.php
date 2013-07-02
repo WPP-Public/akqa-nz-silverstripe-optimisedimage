@@ -83,6 +83,8 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
                 return 'jpg';
             case IMAGETYPE_PNG:
                 return 'png';
+            case IMAGETYPE_GIF:
+                return 'gif';
             default:
                 return false;
         }

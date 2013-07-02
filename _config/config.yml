@@ -9,6 +9,8 @@ OptimisedGDBackend:
       optipng: '%s/optipng %s'
       pngcrush: '%s/pngcrush -rem gAMA -rem cHRM -rem iCCP -rem sRGB -ow %s'
       advpng: '%s/advpng -z4 $Filename'
+    gif:
+      optipng: '%s/optipng %s'
   enabledCommands:
   binDirectory: '/usr/local/bin'
   optimisingQuality: 80
