@@ -2,7 +2,7 @@
 
 Uses various binary tools like jpegoptim and optipng to optimise resampled images created by SilverStripe
 
-For a SilverStripe `2.4` version check the `1.0` branch.
+For a SilverStripe `2.4` version check the `0.1` branch.
 
 ## Installation (with composer)
 
