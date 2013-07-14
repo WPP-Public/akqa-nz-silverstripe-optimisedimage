@@ -6,7 +6,7 @@ For a SilverStripe `2.4` version check the `1.0` branch.
 
 ## Installation (with composer)
 
-	$ composer require heyday/silverstripe-dataobjectpreview
+	$ composer require heyday/silverstripe-optimisedimage
 
 ## Usage
 
