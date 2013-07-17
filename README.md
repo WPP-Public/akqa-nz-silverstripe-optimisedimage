@@ -17,7 +17,7 @@ Configuration options:
 * binDirectory
 * optimisingQuality
 
-In order to enable the optimising of images resampled by SilverStripe, at the very least `enabledCommands` needs to be overridden in your own config.
+At the very least `enabledCommands` needs to be overridden in your own config in order to enable the optimising of images resampled by SilverStripe.
 
 This can be done as follows,
 
