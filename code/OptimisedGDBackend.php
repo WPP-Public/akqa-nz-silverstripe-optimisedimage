@@ -118,7 +118,7 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
         return sprintf(
             $command,
             rtrim($this->config->get('binDirectory'), '/'),
-            $filename,
+            escapeshellarg($filename),
             $this->config->get('optimisingQuality')
         );
     }
