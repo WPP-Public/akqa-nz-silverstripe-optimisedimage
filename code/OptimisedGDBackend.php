@@ -30,6 +30,7 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
         parent::__construct($filename);
     }
     /**
+     * Calls the original writeTo function and then after that completes optimises the image
      * @param string $filename
      */
     public function writeTo($filename)
@@ -39,6 +40,7 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
         $this->optimiseImage($filename);
     }
     /**
+     * Optimises the specified image if there is a command available
      * @param $filename
      * @return mixed|void
      */
@@ -56,6 +58,7 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
                 $process = $this->execCommand($command);
 
                 if (null !== $this->logger && (!$process->isSuccessful() || $this->config->get('debug'))) {
+                    // Do this so the log isn't treated as a web request
                     $requestMethod = $_SERVER['REQUEST_METHOD'];
                     unset($_SERVER['REQUEST_METHOD']);
                     $this->logger->capture(
@@ -76,6 +79,11 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
             }
         }
     }
+    /**
+     * Returns a text version of IMAGETYPE_* constants
+     * @param $type
+     * @return bool|string
+     */
     protected function getImageType($type)
     {
         switch ($type) {
@@ -90,6 +98,7 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
         }
     }
     /**
+     * Gets a command for the file and type of image
      * @param $filename
      * @param $type
      * @return bool|string
@@ -123,6 +132,7 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
         );
     }
     /**
+     * Executes the specified command
      * @param $command
      * @return \Symfony\Component\Process\Process
      */
