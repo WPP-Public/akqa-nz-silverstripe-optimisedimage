@@ -12,15 +12,9 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
      */
     protected $config;
     /**
-     * @var Raven_Client
+     * @var Psr\Log\LoggerInterface
      */
     public $logger;
-    /**
-     * @var array
-     */
-    public static $dependencies = array(
-        'logger' => '%$Raven'
-    );
     /**
      * @param null $filename
      */
@@ -51,30 +45,40 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
 
             $command = $this->getCommand(
                 $filename,
-                $this->getImageType($type)
+                $type = $this->getImageType($type)
             );
 
             if ($command) {
-                $process = $this->execCommand($command);
+                try {
+                    $process = $this->execCommand($command);
+                    $successful = $process->isSuccessful();
 
-                if (null !== $this->logger && (!$process->isSuccessful() || $this->config->get('debug'))) {
-                    // Do this so the log isn't treated as a web request
-                    $requestMethod = $_SERVER['REQUEST_METHOD'];
-                    unset($_SERVER['REQUEST_METHOD']);
-                    $this->logger->capture(
-                        array(
-                            'message' => 'SilverStripe Optimised Image' . ($process->isSuccessful() ? '' : ' Failure'),
-                            'extra'   => array(
+                    if (null !== $this->logger && (!$successful || $this->config->get('debug'))) {
+                        // Do this so the log isn't treated as a web request in raven
+                        $requestMethod = $_SERVER['REQUEST_METHOD'];
+                        unset($_SERVER['REQUEST_METHOD']);
+                        $logType = $successful ? 'info' : 'error';
+                        $this->logger->$logType(
+                            "SilverStripe \"$type\" optimisation $logType",
+                            array(
                                 'command'     => $command,
                                 'exitCode'    => $process->getExitCode(),
                                 'output'      => $process->getOutput(),
                                 'errorOutput' => $process->getErrorOutput()
-                            ),
-                            'level'   => !$process->isSuccessful() ? Raven_Client::ERROR : Raven_Client::INFO
-                        ),
-                        false
-                    );
-                    $_SERVER['REQUEST_METHOD'] = $requestMethod;
+                            )
+                        );
+                        $_SERVER['REQUEST_METHOD'] = $requestMethod;
+                    }
+                        
+                } catch (\Exception $e) {
+                    if (null !== $this->logger) {
+                        $this->logger->error(
+                            "SilverStripe \"$type\" optimisation exception",
+                            array(
+                                'exception' => $e
+                            )
+                        );
+                    }
                 }
             }
         }
