@@ -51,7 +51,7 @@ class OptimisedGDBackend extends GDBackend implements ImageOptimiserInterface
             if ($command) {
                 try {
                     $process = $this->execCommand($command);
-                    $successful = $process->isSuccessful();
+                    $successful = in_array($process->getExitCode(), $this->config->get('successStatuses'));
 
                     if (null !== $this->logger && (!$successful || $this->config->get('debug'))) {
                         // Do this so the log isn't treated as a web request in raven

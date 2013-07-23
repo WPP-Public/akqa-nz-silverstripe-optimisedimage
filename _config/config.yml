@@ -2,6 +2,8 @@
 Name: 'core'
 ---
 OptimisedGDBackend:
+  successStatuses:
+    - 0
   availableCommands:
     jpg:
       jpegoptim: '%1$s/jpegoptim -p -m%3$d --strip-all %2$s'
