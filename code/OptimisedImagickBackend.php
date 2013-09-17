@@ -1,9 +1,11 @@
 <?php
 
+if (class_exists('ImagickBackend')) {
+
 /**
- * Class OptimisedGDBackend
+ * Class OptimisedImagickBackend
  */
-class OptimisedGDBackend extends GDBackend
+class OptimisedImagickBackend extends ImagickBackend
 {
     /**
      * @var ImageOptimiserService
@@ -23,9 +25,11 @@ class OptimisedGDBackend extends GDBackend
     public function writeTo($filename)
     {
         parent::writeTo($filename);
-        
+
         if ($this->optimiserService instanceof ImageOptimiserInterface) {
             $this->optimiserService->optimiseImage($filename);
         }
     }
+}
+
 }

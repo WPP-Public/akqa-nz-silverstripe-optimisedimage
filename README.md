@@ -10,6 +10,19 @@ For a SilverStripe `2.4` version check the `0.1` branch.
 
 ## Usage
 
+### Selecting a backend
+
+The image backend that SilverStripe uses needs to be changed to either `OptimisedGDBackend` or `OptimisedImagickBackend` depending on whether
+you want to us GD or Imagick. To do this, in your `mysite/_config.php` put the following:
+
+```php
+Image::set_backend("OptimisedGDBackend");
+
+// or
+
+Image::set_backend("OptimisedImagickBackend");
+```
+
 Configuration options:
 
 * enabledCommands
@@ -28,7 +41,7 @@ This can be done as follows,
 ---
 After: 'silverstripe-optimisedimage/config#core'
 ---
-OptimisedGDBackend:
+ImageOptimiserService:
   enabledCommands:
     - jpegoptim
     - optipng
@@ -40,7 +53,7 @@ If you want to add your own commands, you can override `availableCommands` e.g.
 ---
 After: 'silverstripe-optimisedimage/config#core'
 ---
-OptimisedGDBackend:
+ImageOptimiserService:
   enabledCommands:
     - jpegoptim
     - optipng
@@ -59,7 +72,7 @@ If your binaries are not located at `/usr/local/bin/` you can override this by s
 ---
 After: 'silverstripe-optimisedimage/config#core'
 ---
-OptimisedGDBackend:
+ImageOptimiserService:
   enabledCommands:
     - jpegoptim
     - optipng
@@ -72,7 +85,7 @@ If your binaries aren't all located in the same directory you will need to manua
 ---
 After: 'silverstripe-optimisedimage/config#core'
 ---
-OptimisedGDBackend:
+ImageOptimiserService:
   enabledCommands:
     - jpegoptim
     - optipng

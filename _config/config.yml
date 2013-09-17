@@ -1,7 +1,7 @@
 ---
 Name: 'core'
 ---
-OptimisedGDBackend:
+ImageOptimiserService:
   successStatuses:
     - 0
   availableCommands:
@@ -16,3 +16,10 @@ OptimisedGDBackend:
   enabledCommands:
   binDirectory: '/usr/local/bin'
   optimisingQuality: 80
+  
+OptimisedGDBackend:
+  dependencies:
+    OptimiserService: '%$ImageOptimiserService'
+OptimisedImagickBackend:
+  dependencies:
+    OptimiserService: '%$ImageOptimiserService'
