@@ -1,8 +1,10 @@
 # SilverStripe Optimised Image
 
-Uses various binary tools like jpegoptim and optipng to optimise resampled images created by SilverStripe
+Uses various binary tools like jpegoptim and optipng to optimise resampled images created by SilverStripe.
 
 For a SilverStripe `2.4` version check the `0.1` branch.
+
+Please note that images are only optimised when they are resampled (using CroppedImage, SetWidth, SetHeight, PaddedResize, etc).
 
 ## Installation (with composer)
 
@@ -13,14 +15,16 @@ For a SilverStripe `2.4` version check the `0.1` branch.
 ### Selecting a backend
 
 The image backend that SilverStripe uses needs to be changed to either `OptimisedGDBackend` or `OptimisedImagickBackend` depending on whether
-you want to us GD or Imagick. To do this, in your `mysite/_config.php` put the following:
+you want to us GD or Imagick. To do this, in your `mysite/_config/config.yml` add:
 
-```php
-Image::set_backend("OptimisedGDBackend");
+```yml
+Image:
+    backend: OptimisedGDBackend
 
 // or
 
-Image::set_backend("OptimisedImagickBackend");
+Image:
+    backend: OptimisedImagickBackend
 ```
 
 Configuration options:
