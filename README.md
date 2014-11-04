@@ -4,7 +4,7 @@ Uses various binary tools like jpegoptim and optipng to optimise resampled image
 
 For a SilverStripe `2.4` version check the `0.1` branch.
 
-Please note that images are only optimised when they are resampled (using CroppedImage, SetWidth, SetHeight, PaddedResize, etc).
+Note that only resampled images are optimised by this module (eg. using CroppedImage, SetWidth, SetHeight, PaddedResize, etc). If you want to optimise images without resizing them, [there is currently a workaround to trigger optimisation](https://github.com/heyday/silverstripe-optimisedimage/issues/4#issuecomment-60821831).
 
 ## Installation (with composer)
 
