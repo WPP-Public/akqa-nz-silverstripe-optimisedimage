@@ -23,3 +23,10 @@ OptimisedGDBackend:
 OptimisedImagickBackend:
   dependencies:
     OptimiserService: '%$ImageOptimiserService'
+
+---
+Name: 'resample'
+---
+ResampleImage:
+  default_max_x: 1024
+  default_max_y: 1024

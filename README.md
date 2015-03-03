@@ -1,6 +1,10 @@
 # SilverStripe Optimised Image
 
+This module has two parts. Resampling all images on upload & optimising of Silverstripe resampled images.
+
+Uses a Data Extension that resamples all images on upload.
 Uses various binary tools like jpegoptim and optipng to optimise resampled images created by SilverStripe.
+
 
 For a SilverStripe `2.4` version check the `0.1` branch.
 
@@ -11,6 +15,31 @@ Note that only resampled images are optimised by this module (eg. using CroppedI
 	$ composer require heyday/silverstripe-optimisedimage
 
 ## Usage
+
+
+If you want to use the ResampleImage extension it needs to be activated via the Configuration API like so:
+ In your `mysite/_config/config.yml` add:
+
+```yml
+Image:
+  extensions:
+    - ResampleImage
+```
+
+The default maximum width & height to resize images to is set at:
+```yml
+ResampleImage:
+  default_max_x: 1024
+  default_max_y: 1024
+```
+You can override these yourself in In your `mysite/_config/config.yml` with these settings:
+```yml
+ResampleImage:
+  max_x: 900
+  max_y: 600
+```
+
+
 
 ### Selecting a backend
 
