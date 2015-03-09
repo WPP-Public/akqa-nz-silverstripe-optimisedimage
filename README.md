@@ -1,6 +1,6 @@
 # SilverStripe Optimised Image
 
-This module has two parts. Resampling all images on upload & optimising of Silverstripe resampled images.
+This module has two parts. Resampling all images on upload & optimising of SilverStripe resampled images.
 
 Uses a Data Extension that resamples all images on upload.
 Uses various binary tools like jpegoptim and optipng to optimise resampled images created by SilverStripe.
@@ -16,6 +16,8 @@ Note that only resampled images are optimised by this module (eg. using CroppedI
 
 ## Usage
 
+
+### Resampling Images on upload
 
 If you want to use the ResampleImage extension it needs to be activated via the Configuration API like so:
  In your `mysite/_config/config.yml` add:
@@ -40,8 +42,7 @@ ResampleImage:
 ```
 
 
-
-### Selecting a backend
+### Optimising SilverStripe Resampled Images - Selecting a backend
 
 The image backend that SilverStripe uses needs to be changed to either `OptimisedGDBackend` or `OptimisedImagickBackend` depending on whether
 you want to us GD or Imagick. To do this, in your `mysite/_config/config.yml` add:
