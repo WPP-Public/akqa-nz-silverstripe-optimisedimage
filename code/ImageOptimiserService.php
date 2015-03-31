@@ -42,46 +42,46 @@ class ImageOptimiserService implements ImageOptimiserInterface
         if (file_exists($filename)) {
             list($width, $height, $type, $attr) = getimagesize($filename);
 
-            $command = $this->getCommand(
-                $filename,
-                $type = $this->getImageType($type)
-            );
+            $commands = $this->getCommands($filename, $type = $this->getImageType($type));
 
-            if ($command) {
-                try {
-                    $process = $this->execCommand($command);
-                    $successful = in_array($process->getExitCode(), $this->config->get('successStatuses'));
+            if (!empty($commands)) {
+                foreach ($commands as $command) {
+                    try {
+                        $process    = $this->execCommand($command);
+                        $successful = in_array($process->getExitCode(), $this->config->get('successStatuses'));
 
-                    if (null !== $this->logger && (!$successful || $this->config->get('debug'))) {
-                        // Do this so the log isn't treated as a web request in raven
-                        $requestMethod = $_SERVER['REQUEST_METHOD'];
-                        unset($_SERVER['REQUEST_METHOD']);
-                        $logType = $successful ? 'info' : 'error';
-                        $this->logger->$logType(
-                            "SilverStripe \"$type\" optimisation $logType",
-                            array(
-                                'command'     => $command,
-                                'exitCode'    => $process->getExitCode(),
-                                'output'      => $process->getOutput(),
-                                'errorOutput' => $process->getErrorOutput()
-                            )
-                        );
-                        $_SERVER['REQUEST_METHOD'] = $requestMethod;
-                    }
+                        if (null !== $this->logger && (!$successful || $this->config->get('debug'))) {
+                            // Do this so the log isn't treated as a web request in raven
+                            $requestMethod = $_SERVER['REQUEST_METHOD'];
+                            unset($_SERVER['REQUEST_METHOD']);
+                            $logType = $successful ? 'info' : 'error';
+                            $this->logger->$logType(
+                                "SilverStripe \"$type\" optimisation $logType",
+                                array(
+                                    'command'     => $command,
+                                    'exitCode'    => $process->getExitCode(),
+                                    'output'      => $process->getOutput(),
+                                    'errorOutput' => $process->getErrorOutput()
+                                )
+                            );
+                            $_SERVER['REQUEST_METHOD'] = $requestMethod;
+                        }
 
-                } catch (\Exception $e) {
-                    if (null !== $this->logger) {
-                        $this->logger->error(
-                            "SilverStripe \"$type\" optimisation exception",
-                            array(
-                                'exception' => $e
-                            )
-                        );
+                    } catch (\Exception $e) {
+                        if (null !== $this->logger) {
+                            $this->logger->error(
+                                "SilverStripe \"$type\" optimisation exception",
+                                array(
+                                    'exception' => $e
+                                )
+                            );
+                        }
                     }
                 }
             }
         }
     }
+
     /**
      * Returns a text version of IMAGETYPE_* constants
      * @param $type
@@ -106,33 +106,28 @@ class ImageOptimiserService implements ImageOptimiserInterface
      * @param $type
      * @return bool|string
      */
-    protected function getCommand($filename, $type)
+    protected function getCommands($filename, $type)
     {
         $commands = $this->config->get('availableCommands');
 
         if (!$type || !isset($commands[$type])) {
-            return false;
+            return array();
         }
 
-        $command = false;
+        $command = array();
 
         foreach ((array)$this->config->get('enabledCommands') as $commandType) {
             if (isset($commands[$type][$commandType])) {
-                $command = $commands[$type][$commandType];
-                break;
+                $command[] = sprintf(
+                    $commands[$type][$commandType],
+                    rtrim($this->config->get('binDirectory'), '/'),
+                    escapeshellarg($filename),
+                    $this->config->get('optimisingQuality')
+                );
             }
         }
 
-        if (!$command) {
-            return false;
-        }
-
-        return sprintf(
-            $command,
-            rtrim($this->config->get('binDirectory'), '/'),
-            escapeshellarg($filename),
-            $this->config->get('optimisingQuality')
-        );
+        return $command;
     }
     /**
      * Executes the specified command
