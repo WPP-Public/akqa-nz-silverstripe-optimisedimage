@@ -1,26 +1,27 @@
 # SilverStripe Optimised Image
 
-This module has two parts. Resampling all images on upload & optimising of SilverStripe resampled images.
+This module provides two image manipulation services that can be configured independently:
 
-Uses a Data Extension that resamples all images on upload.
-Uses various binary tools like jpegoptim and optipng to optimise resampled images created by SilverStripe.
-
+* Run command-line image optimisation tools on images resampled by SilverStripe: reduces the file size of the generated images without reducing fidelity in a noticeable way
+* Resize images on upload to fit within configured dimensions: prevents images with massive dimensions entering the assets and becoming a memory problem when resampling.
 
 For a SilverStripe `2.4` version check the `0.1` branch.
 
-Note that only resampled images are optimised by this module (eg. using CroppedImage, SetWidth, SetHeight, PaddedResize, etc). If you want to optimise images without resizing them, [there is currently a workaround to trigger optimisation](https://github.com/heyday/silverstripe-optimisedimage/issues/4#issuecomment-60821831).
+Configurations for some common image optimisation tools (eg. jpegoptim and optipng) are provided as part of this module, though any command line program can be used with the image optimisation service. No optimisation program binaries are bundled with this module, so you'll need to install any programs you want to use on the target system.
+
+Note that only resampled images are optimised by the optimisation service module (eg. using CroppedImage, SetWidth, SetHeight, PaddedResize, etc). If you want to optimise images without resizing them, [there is currently a workaround to trigger optimisation](https://github.com/heyday/silverstripe-optimisedimage/issues/4#issuecomment-60821831).
+
 
 ## Installation (with composer)
 
 	$ composer require heyday/silverstripe-optimisedimage
 
-## Usage
 
+## Usage
 
 ### Resampling Images on upload
 
-If you want to use the ResampleImage extension it needs to be activated via the Configuration API like so:
- In your `mysite/_config/config.yml` add:
+By default, resampling on upload is not enabled. To activate it, the `ResampleImage` extension needs to be added to `Image`. In your `mysite/_config/config.yml` add:
 
 ```yml
 Image:
@@ -28,18 +29,17 @@ Image:
     - ResampleImage
 ```
 
-The default maximum width & height to resize images to is set at:
+The default maximum width & height for uploaded images is **1024 x 1024** pixels. Images larger than this will be scaled to fit their largest dimension to this size.
+
+You can set your own maximum height and width for uploaded images by overriding the default config in your `mysite/_config/config.yml`:
+
 ```yml
 ResampleImage:
-  default_max_x: 1024
-  default_max_y: 1024
+  max_x: 2000
+  max_y: 2500
 ```
-You can override these yourself in In your `mysite/_config/config.yml` with these settings:
-```yml
-ResampleImage:
-  max_x: 900
-  max_y: 600
-```
+
+Note that resampling on upload is a destructive process: the original uploaded image is discarded.
 
 
 ### Optimising SilverStripe Resampled Images - Selecting a backend
