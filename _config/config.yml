@@ -11,6 +11,7 @@ ImageOptimiserService:
       optipng: '%s/optipng %s'
       pngcrush: '%s/pngcrush -rem gAMA -rem cHRM -rem iCCP -rem sRGB -ow %s'
       advpng: '%s/advpng -z4 $Filename'
+      pngquant: '%s/pngquant -f --skip-if-larger --ext=".png" %s'
     gif:
       optipng: '%s/optipng %s'
   enabledCommands:
