@@ -27,7 +27,7 @@ class ResampleImage extends DataExtension
      */
     public function getMaxX()
     {
-        return (int) $this->config->get('max_x') ?: $this->config->get('default_max_x');
+        return (int) $this->config->get('max_x');
     }
 
     /**
@@ -37,7 +37,7 @@ class ResampleImage extends DataExtension
      */
     public function getMaxY()
     {
-        return (int) $this->config->get('max_y') ?: $this->config->get('default_max_y');
+        return (int) $this->config->get('max_y');
     }
 
     /**

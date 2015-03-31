@@ -17,7 +17,7 @@ ImageOptimiserService:
   enabledCommands:
   binDirectory: '/usr/local/bin'
   optimisingQuality: 80
-  
+
 OptimisedGDBackend:
   dependencies:
     OptimiserService: '%$ImageOptimiserService'
@@ -29,5 +29,5 @@ OptimisedImagickBackend:
 Name: 'resample'
 ---
 ResampleImage:
-  default_max_x: 1024
-  default_max_y: 1024
+  max_x: 1024
+  max_y: 1024
