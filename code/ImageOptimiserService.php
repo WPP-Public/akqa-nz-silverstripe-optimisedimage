@@ -44,38 +44,36 @@ class ImageOptimiserService implements ImageOptimiserInterface
 
             $commands = $this->getCommands($filename, $type = $this->getImageType($type));
 
-            if (!empty($commands)) {
-                foreach ($commands as $command) {
-                    try {
-                        $process    = $this->execCommand($command);
-                        $successful = in_array($process->getExitCode(), $this->config->get('successStatuses'));
+            foreach ($commands as $command) {
+                try {
+                    $process    = $this->execCommand($command);
+                    $successful = in_array($process->getExitCode(), $this->config->get('successStatuses'));
 
-                        if (null !== $this->logger && (!$successful || $this->config->get('debug'))) {
-                            // Do this so the log isn't treated as a web request in raven
-                            $requestMethod = $_SERVER['REQUEST_METHOD'];
-                            unset($_SERVER['REQUEST_METHOD']);
-                            $logType = $successful ? 'info' : 'error';
-                            $this->logger->$logType(
-                                "SilverStripe \"$type\" optimisation $logType",
-                                array(
-                                    'command'     => $command,
-                                    'exitCode'    => $process->getExitCode(),
-                                    'output'      => $process->getOutput(),
-                                    'errorOutput' => $process->getErrorOutput()
-                                )
-                            );
-                            $_SERVER['REQUEST_METHOD'] = $requestMethod;
-                        }
+                    if (null !== $this->logger && (!$successful || $this->config->get('debug'))) {
+                        // Do this so the log isn't treated as a web request in raven
+                        $requestMethod = $_SERVER['REQUEST_METHOD'];
+                        unset($_SERVER['REQUEST_METHOD']);
+                        $logType = $successful ? 'info' : 'error';
+                        $this->logger->$logType(
+                            "SilverStripe \"$type\" optimisation $logType",
+                            array(
+                                'command'     => $command,
+                                'exitCode'    => $process->getExitCode(),
+                                'output'      => $process->getOutput(),
+                                'errorOutput' => $process->getErrorOutput()
+                            )
+                        );
+                        $_SERVER['REQUEST_METHOD'] = $requestMethod;
+                    }
 
-                    } catch (\Exception $e) {
-                        if (null !== $this->logger) {
-                            $this->logger->error(
-                                "SilverStripe \"$type\" optimisation exception",
-                                array(
-                                    'exception' => $e
-                                )
-                            );
-                        }
+                } catch (\Exception $e) {
+                    if (null !== $this->logger) {
+                        $this->logger->error(
+                            "SilverStripe \"$type\" optimisation exception",
+                            array(
+                                'exception' => $e
+                            )
+                        );
                     }
                 }
             }
@@ -101,10 +99,10 @@ class ImageOptimiserService implements ImageOptimiserInterface
         }
     }
     /**
-     * Gets a command for the file and type of image
+     * Gets all enabled commands for the file and type of image
      * @param $filename
      * @param $type
-     * @return bool|string
+     * @return array
      */
     protected function getCommands($filename, $type)
     {
