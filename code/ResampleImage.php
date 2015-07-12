@@ -19,8 +19,7 @@ class ResampleImage extends DataExtension
         parent::__construct();
         $this->config = $config ?: Config::inst()->forClass(__CLASS__);
         if ($memLimit = $this->config->get('memory')) {
-            $limit = (int)$memLimit;
-            set_increase_memory_limit_max($limit);
+            increase_memory_limit_to($memLimit);
         }
     }
 
