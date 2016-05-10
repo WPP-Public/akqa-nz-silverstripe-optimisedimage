@@ -40,7 +40,16 @@ class ImageOptimiserService implements ImageOptimiserInterface
     public function optimiseImage($filename)
     {
         if (file_exists($filename)) {
-            list($width, $height, $type, $attr) = getimagesize($filename);
+            try {
+                list($width, $height, $type, $attr) = getimagesize($filename);
+            } catch (Exception $e) {
+                $this->logger->error(
+                    "Unable to get image size.",
+                    array(
+                        'exception' => $e
+                    )
+                );
+            }
 
             $commands = $this->getCommands($filename, $type = $this->getImageType($type));
 
