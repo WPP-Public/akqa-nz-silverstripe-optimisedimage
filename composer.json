@@ -11,8 +11,8 @@
 		}
 	],
 	"require": {
-		"composer/installers": "~1.0",
-		"symfony/process": "~2.3"
+		"composer/installers": "^1.0",
+		"symfony/process": "^2.3|^3.0"
 	},
 	"supports": {
 		"raven/raven": "Allows logging for image optimisation through raven and sentry"
